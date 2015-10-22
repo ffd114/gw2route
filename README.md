@@ -13,14 +13,14 @@ Original version: [GW2Navi](http://forum.renaka.com/topic/5546166/1/)
 * Currently only support 64 Bit Windows
 
 ## Installation
-* Download from here: https://bitbucket.org/ffd114/gw2route/downloads
+* Download from here: https://github.com/ffd114/gw2route/releases
 * Extract
 * Double click `run.bat`
 
 ## Differences:
 * Browser using [CEF](https://bitbucket.org/chromiumembedded/cef). No more IE11
 * Nav bar is disabled
-* About and Update button when clicked will link to [here](https://github.com/ffd114/gw2route/releases)
+* About and Update button when clicked will link to [here](https://github.com/ffd114/gw2route)
 
 ## Dependencies
 * DJNativeSwing.jar
