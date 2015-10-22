@@ -6,14 +6,14 @@ package org.lunarproject.gw2route;
  * edges and moveable from a custom title bar.
  * Source: http://www.coderanch.com/t/415944/GUI/java/user-ve-undecorated-window-resizable
  */
+import org.cef.CefApp;
+
 import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import javax.swing.*;
  
 public class ResizableFrame extends JFrame implements MouseMotionListener, MouseListener
@@ -50,6 +50,14 @@ public class ResizableFrame extends JFrame implements MouseMotionListener, Mouse
 	
 		setLocation(initialLocation);
 		setUndecorated(true);
+
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				CefApp.getInstance().dispose();
+				dispose();
+			}
+		});
 	}
 	
 	public void setMinimumSize(int pMinWidth, int pMinHeight)

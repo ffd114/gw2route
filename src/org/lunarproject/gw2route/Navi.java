@@ -76,6 +76,7 @@ public class Navi extends JPanel {
 	final static String FILENAME_TRANSLATIONS = "translations.ini";
 	final static String FILENAME_BOOKMARKS = "bookmarks.txt";
 	final static String REPO_URI = "https://bitbucket.org/ffd114/gw2route";
+	final static String UPDATE_URI = "https://bitbucket.org/ffd114/gw2route/downloads";
 	
 	WindowPreset currentWindowPreset;
 	int ICON_HEIGHT = 16;
@@ -137,8 +138,10 @@ public class Navi extends JPanel {
 		JPanel webBrowserPanel = new JPanel(new BorderLayout());
 		webBrowserPanel.setBorder(BorderFactory.createEmptyBorder());
 
+		String[] args = new String[] {"--enable-system-flash"};
+
 		// Initialize cefbrowser
-		CefApp.addAppHandler(new CefAppHandlerAdapter(null) {
+		CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 			@Override
 			public void stateHasChanged(org.cef.CefApp.CefAppState state) {
 				// Shutdown the app if the native CEF part is terminated
@@ -146,8 +149,13 @@ public class Navi extends JPanel {
 					System.exit(0);
 			}
 		});
+
 		_settings = new CefSettings();
-		_cefApp = CefApp.getInstance(_settings);
+		_settings.cache_path = "cache";
+
+		// Add args to enable using flash
+
+		_cefApp = CefApp.getInstance(args, _settings);
 		_client = _cefApp.createClient();
 		_browser = _client.createBrowser(TheOptions.URL_HOMEPAGE, false, true);
 
@@ -168,7 +176,7 @@ public class Navi extends JPanel {
 		TheBrowser.setLocationBarVisible(false);
 		TheBrowser.setButtonBarVisible(false);
 		TheBrowser.setMenuBarVisible(false);*/
-		
+
 		TheClassLoader = this.getClass().getClassLoader();
 
 		// Browser frame initializations in separate functions to reduce clutter
@@ -516,7 +524,7 @@ public class Navi extends JPanel {
 			{
 				try
 				{
-					Desktop.getDesktop().browse(new URI(REPO_URI));
+					Desktop.getDesktop().browse(new URI(UPDATE_URI));
 					TheFrame.setState(Frame.ICONIFIED);
 				}
 				catch (IOException | URISyntaxException ex) {}
