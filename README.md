@@ -20,7 +20,7 @@ Original version: [GW2Navi](http://forum.renaka.com/topic/5546166/1/)
 ## Differences:
 * Browser using [CEF](https://bitbucket.org/chromiumembedded/cef). No more IE11
 * Nav bar is disabled
-* About and Update button when clicked will link to [here](https://bitbucket.org/ffd114/gw2route)
+* About and Update button when clicked will link to [here](https://github.com/ffd114/gw2route/releases)
 
 ## Dependencies
 * DJNativeSwing.jar
