@@ -75,8 +75,8 @@ public class Navi extends JPanel {
 	final static String FILENAME_OPTIONS = "options.ini";
 	final static String FILENAME_TRANSLATIONS = "translations.ini";
 	final static String FILENAME_BOOKMARKS = "bookmarks.txt";
-	final static String REPO_URI = "https://bitbucket.org/ffd114/gw2route";
-	final static String UPDATE_URI = "https://bitbucket.org/ffd114/gw2route/downloads";
+	final static String REPO_URI = "https://github.com/ffd114/gw2route";
+	final static String UPDATE_URI = "https://github.com/ffd114/gw2route/releases";
 	
 	WindowPreset currentWindowPreset;
 	int ICON_HEIGHT = 16;
