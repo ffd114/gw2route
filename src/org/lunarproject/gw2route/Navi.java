@@ -70,7 +70,7 @@ import org.cef.handler.CefAppHandlerAdapter;
 public class Navi extends JPanel {
 	
 	final static String PROGRAMNAME = "gw2route";
-	final static String PROGRAMVERSION = "0.0.1b";
+	final static String PROGRAMVERSION = "0.0.2b";
 	final static String DIRECTORY_ICONS = "img/";
 	final static String FILENAME_OPTIONS = "options.ini";
 	final static String FILENAME_TRANSLATIONS = "translations.ini";
@@ -138,6 +138,7 @@ public class Navi extends JPanel {
 		JPanel webBrowserPanel = new JPanel(new BorderLayout());
 		webBrowserPanel.setBorder(BorderFactory.createEmptyBorder());
 
+		// Add args to enable using flash
 		String[] args = new String[] {"--enable-system-flash"};
 
 		// Initialize cefbrowser
@@ -150,19 +151,16 @@ public class Navi extends JPanel {
 			}
 		});
 
+		// Setup settings
 		_settings = new CefSettings();
-		_settings.cache_path = "cache";
 
-		// Add args to enable using flash
+		// Enable cache
+		_settings.cache_path = "cache";
 
 		_cefApp = CefApp.getInstance(args, _settings);
 		_client = _cefApp.createClient();
 		_browser = _client.createBrowser(TheOptions.URL_HOMEPAGE, false, true);
 
-		/*
-		TheBrowser = new JWebBrowser();
-		TheBrowser.setBorder(BorderFactory.createEmptyBorder());
-		*/
 		if (TheOptions.wantLastVisited)
 		{
 			_browser.loadURL(TheOptions.URL_LASTVISITED);
@@ -170,12 +168,6 @@ public class Navi extends JPanel {
 
 		webBrowserPanel.add(_browser.getUIComponent(), BorderLayout.CENTER);
 		add(webBrowserPanel, BorderLayout.CENTER);
-
-		/*
-		TheBrowser.setStatusBarVisible(false);
-		TheBrowser.setLocationBarVisible(false);
-		TheBrowser.setButtonBarVisible(false);
-		TheBrowser.setMenuBarVisible(false);*/
 
 		TheClassLoader = this.getClass().getClassLoader();
 

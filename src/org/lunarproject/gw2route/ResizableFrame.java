@@ -51,6 +51,7 @@ public class ResizableFrame extends JFrame implements MouseMotionListener, Mouse
 		setLocation(initialLocation);
 		setUndecorated(true);
 
+		// Prevent cef still running even after applicatoin is closed
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
