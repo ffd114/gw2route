@@ -159,12 +159,15 @@ public class Navi extends JPanel {
 
 		_cefApp = CefApp.getInstance(args, _settings);
 		_client = _cefApp.createClient();
-		_browser = _client.createBrowser(TheOptions.URL_HOMEPAGE, false, true);
-
+		
+		String loadUrl = TheOptions.URL_HOMEPAGE;
+		
 		if (TheOptions.wantLastVisited)
 		{
-			_browser.loadURL(TheOptions.URL_LASTVISITED);
+			loadUrl = TheOptions.URL_LASTVISITED;
 		}
+		
+		_browser = _client.createBrowser(loadUrl, false, true);
 
 		webBrowserPanel.add(_browser.getUIComponent(), BorderLayout.CENTER);
 		add(webBrowserPanel, BorderLayout.CENTER);
