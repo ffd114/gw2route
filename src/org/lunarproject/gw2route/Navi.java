@@ -66,6 +66,7 @@ import org.cef.CefClient;
 import org.cef.CefSettings;
 import org.cef.browser.CefBrowser;
 import org.cef.handler.CefAppHandlerAdapter;
+import org.cef.handler.CefDisplayHandlerAdapter;
 
 
 public class Navi extends JPanel {
@@ -129,11 +130,14 @@ public class Navi extends JPanel {
 		+ "C + # = load a Color preset.\n"
 		+ "# = load Opacity value.\n";
 
+	private ControlPanel _controlPanel;
+
 	public Navi() throws InterruptedException
 	{
 		super(new BorderLayout());
 		// Load options and data first before doing anything
 		loadStorage();
+
 
 		// Initialize browser
 		JPanel webBrowserPanel = new JPanel(new BorderLayout());
@@ -166,7 +170,7 @@ public class Navi extends JPanel {
 
 		_cefApp = CefApp.getInstance(args, _settings);
 		_client = _cefApp.createClient();
-		
+
 		String loadUrl = TheOptions.URL_HOMEPAGE;
 		
 		if (TheOptions.wantLastVisited)
@@ -176,7 +180,18 @@ public class Navi extends JPanel {
 		
 		_browser = _client.createBrowser(loadUrl, false, true);
 
+		_controlPanel = new ControlPanel(_browser);
+
+		_client.addDisplayHandler(new CefDisplayHandlerAdapter() {
+			@Override
+			public void onAddressChange(CefBrowser browser, String url) {
+				_controlPanel.setAddress(browser, url);
+			}
+		});
+
 		webBrowserPanel.add(_browser.getUIComponent(), BorderLayout.CENTER);
+
+		add(_controlPanel, BorderLayout.NORTH);
 		add(webBrowserPanel, BorderLayout.CENTER);
 
 		TheClassLoader = this.getClass().getClassLoader();
@@ -472,7 +487,7 @@ public class Navi extends JPanel {
 		
 		JMenu menu_Bookmarks = new JMenu(TheTranslations.get("Bookmarks"));
 		JMenu menu_Options = new JMenu(TheTranslations.get("Options"));
-		// JMenuItem item_Navigation = new JCheckBoxMenuItem(TheTranslations.get("Show", "Navigation"));
+		JMenuItem item_Navigation = new JCheckBoxMenuItem(TheTranslations.get("Show", "Navigation"));
 		JMenuItem item_Home = new JMenuItem(TheTranslations.get("Homepage"));
 		JMenuItem item_Update = new JMenuItem(TheTranslations.get("Update"));
 		JMenuItem item_About = new JMenuItem(TheTranslations.get("About"));
@@ -480,7 +495,7 @@ public class Navi extends JPanel {
 		
 		menu_Bookmarks.setIcon(getIcon("bookmark_folder"));
 		menu_Options.setIcon(getIcon("options"));
-		// item_Navigation.setIcon(getIcon("navigation"));
+		item_Navigation.setIcon(getIcon("navigation"));
 		item_Home.setIcon(getIcon("home"));
 		item_Update.setIcon(getIcon("update"));
 		item_About.setIcon(getIcon("about"));
@@ -488,14 +503,14 @@ public class Navi extends JPanel {
 
 		menu_Bookmarks.setMnemonic(KeyEvent.VK_B);
 		menu_Options.setMnemonic(KeyEvent.VK_S);
-		// item_Navigation.setMnemonic(KeyEvent.VK_N);
+		item_Navigation.setMnemonic(KeyEvent.VK_N);
 		item_Home.setMnemonic(KeyEvent.VK_H);
 		item_Update.setMnemonic(KeyEvent.VK_U);
 		item_About.setMnemonic(KeyEvent.VK_A);
 		item_Exit.setMnemonic(KeyEvent.VK_X);
 		
 		menu_Main.add(menu_Bookmarks);
-		// menu_Main.add(item_Navigation);
+		menu_Main.add(item_Navigation);
 		menu_Main.addSeparator();
 		menu_Main.add(item_Home);
 		menu_Main.add(item_Update);
@@ -505,16 +520,16 @@ public class Navi extends JPanel {
 		menu_Main.addSeparator();
 		menu_Main.add(item_Exit);
 		
-		// item_Navigation.setSelected(TheOptions.wantNavbar);
+		item_Navigation.setSelected(TheOptions.wantNavbar);
 
-		/*
+
 		item_Navigation.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e)
 			{
 				doShowNavbar(e.getStateChange() == ItemEvent.SELECTED, false);
 			}
 		});
-		*/
+		
 		item_Home.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e)
 			{
@@ -900,8 +915,7 @@ public class Navi extends JPanel {
 		// Add listener to components that can bring up popup menus
 		MouseListener popupListener = new PopupListener();
 		TheBar.addMouseListener(popupListener);
-		
-		
+
 		final JMenu menu_Sizes = new JMenu("(S) " + TheTranslations.get("Sizes"));
 		final JMenu menu_Colors = new JMenu("(C) " + TheTranslations.get("Colors"));
 		final JMenu menu_Border = new JMenu("(B) " + TheTranslations.get("Border"));
@@ -1143,13 +1157,6 @@ public class Navi extends JPanel {
 		}
 	}
 	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Saves the current frame size and resizes the frame to fit only the bar
 	 * icon, or resizes it back to old size if already miniaturized.
@@ -1253,7 +1260,7 @@ public class Navi extends JPanel {
 		TheFrame.setIconImage(getIcon("icon_program").getImage());
 		
 		// Show navbar if chosen before
-		// doShowNavbar(TheOptions.wantNavbar, true);
+		doShowNavbar(TheOptions.wantNavbar, true);
 	}
 
 	/**
@@ -1443,5 +1450,31 @@ public class Navi extends JPanel {
 			}
 		}
 		return -1;
+	}
+
+	/**
+	 * Shows the navigation bar depending on boolean.
+	 * @param pWantNavbar
+	 */
+	private void doShowNavbar(boolean pWantNavbar, boolean pIsPreloaded)
+	{
+		TheOptions.set_wantNavbar(pWantNavbar);
+		_controlPanel.setVisible(TheOptions.wantNavbar);
+
+		if (pIsPreloaded == false)
+		{
+			if (TheOptions.wantNavbar)
+			{
+				TheFrame.setSize(new Dimension(
+						TheFrame.getWidth() + TheOptions.NAVBAR_THICKNESS * 2,
+						TheFrame.getHeight() + TheOptions.NAVBAR_HEIGHT));
+			}
+			else
+			{
+				TheFrame.setSize(new Dimension(
+						TheFrame.getWidth() - TheOptions.NAVBAR_THICKNESS * 2,
+						TheFrame.getHeight() - TheOptions.NAVBAR_HEIGHT));
+			}
+		}
 	}
 }
