@@ -20,6 +20,7 @@ public class Option {
 	Ini.Section standarddimensions;
 	Ini.Section windowpresets;
 	Ini.Section colorpresets;
+	Ini.Section cef;
 	
 	String URL_HOMEPAGE;
 	String URL_LASTVISITED;
@@ -68,8 +69,9 @@ public class Option {
 	Dimension FRAME_QUICK_4;
 	Dimension FRAME_QUICK_A;
 	Dimension FRAME_QUICK_B;
-	
-	
+
+	boolean ENABLE_FLASH;
+
 	public Option(Ini pIni)
 	{
 		this.File = pIni;
@@ -81,6 +83,7 @@ public class Option {
 		standarddimensions = File.get("StandardDimensions");
 		windowpresets = File.get("WindowPresets");
 		colorpresets = File.get("ColorPresets");
+		cef = File.get("Cef");
 		
 		// INI properties, same order as in text file
 		URL_HOMEPAGE = urls.get("URL_HOMEPAGE");
@@ -148,6 +151,8 @@ public class Option {
 		COLORPRESET_USER[1] = new ColorPreset(colorpresets.get("COLORPRESET_USER1"));
 		COLORPRESET_USER[2] = new ColorPreset(colorpresets.get("COLORPRESET_USER2"));
 		COLORPRESET_USER[3] = new ColorPreset(colorpresets.get("COLORPRESET_USER3"));
+
+		ENABLE_FLASH = Boolean.parseBoolean(cef.get("ENABLE_FLASH"));
 	}
 	
 	

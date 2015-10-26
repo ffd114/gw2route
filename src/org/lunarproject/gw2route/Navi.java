@@ -39,6 +39,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -139,7 +140,13 @@ public class Navi extends JPanel {
 		webBrowserPanel.setBorder(BorderFactory.createEmptyBorder());
 
 		// Add args to enable using flash
-		String[] args = new String[] {"--enable-system-flash"};
+		List<String> argList = new ArrayList<String>();
+
+		if(TheOptions.ENABLE_FLASH) {
+			argList.add("--enable-system-flash");
+		}
+
+		String[] args = argList.toArray(new String[argList.size()]);
 
 		// Initialize cefbrowser
 		CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
