@@ -71,6 +71,7 @@ public class Option {
 	Dimension FRAME_QUICK_B;
 
 	boolean ENABLE_FLASH;
+	boolean ENABLE_AGGRESIVE_FLUSHING;
 
 	public Option(Ini pIni)
 	{
@@ -153,6 +154,7 @@ public class Option {
 		COLORPRESET_USER[3] = new ColorPreset(colorpresets.get("COLORPRESET_USER3"));
 
 		ENABLE_FLASH = Boolean.parseBoolean(cef.get("ENABLE_FLASH"));
+		ENABLE_AGGRESIVE_FLUSHING = Boolean.parseBoolean(cef.get("ENABLE_AGGRESIVE_FLUSHING"));
 	}
 	
 	

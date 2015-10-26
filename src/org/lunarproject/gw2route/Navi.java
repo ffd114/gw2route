@@ -144,15 +144,20 @@ public class Navi extends JPanel {
 		webBrowserPanel.setBorder(BorderFactory.createEmptyBorder());
 
 		// Add args to enable using flash
-		List<String> argList = new ArrayList<String>();
+		List<String> argList = new ArrayList<>();
 
 		if(TheOptions.ENABLE_FLASH) {
 			argList.add("--enable-system-flash");
 		}
 
+		if(TheOptions.ENABLE_AGGRESIVE_FLUSHING) {
+			argList.add("--enable-aggressive-domstorage-flushing");
+		}
+
+
 		String[] args = argList.toArray(new String[argList.size()]);
 
-		// Initialize cefbrowser
+		// Initialize browser
 		CefApp.addAppHandler(new CefAppHandlerAdapter(args) {
 			@Override
 			public void stateHasChanged(org.cef.CefApp.CefAppState state) {
@@ -165,14 +170,15 @@ public class Navi extends JPanel {
 		// Setup settings
 		_settings = new CefSettings();
 
-		// Enable cache
-		_settings.cache_path = "cache";
+		// Enable cache. Save to AppData folder
+		_settings.cache_path = new File(System.getenv("AppData"), "gw2route").getAbsolutePath();
+		_settings.windowless_rendering_enabled = false;
 
 		_cefApp = CefApp.getInstance(args, _settings);
 		_client = _cefApp.createClient();
 
 		String loadUrl = TheOptions.URL_HOMEPAGE;
-		
+
 		if (TheOptions.wantLastVisited)
 		{
 			loadUrl = TheOptions.URL_LASTVISITED;
