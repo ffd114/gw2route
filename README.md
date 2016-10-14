@@ -1,4 +1,12 @@
-# gw2route
+# gw2route (Not maintained anymore)
+
+============== Note (2016-10-14)
+
+This is not being maintained anymore. Upstream version has already supported Chromium, go [here](http://forum.renaka.com/topic/5546166/1/) to download it.
+
+Many thanks to Drant for supporting it
+
+============== End
 
 This is a modified version of GW2Navi application by Drant. I only alter the use of
 JWebBrowser to CefBrowser.
